@@ -1,4 +1,4 @@
-package: github.com/scalify/jolokia_exporter
+package: github.com/jaxxstorm/jolokia_exporter
 import:
 - package: github.com/prometheus/client_golang
   subpackages:
