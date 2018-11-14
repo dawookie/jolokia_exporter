@@ -2,7 +2,7 @@
 
 package main
 
-import "github.com/scalify/jolokia_exporter/cmd"
+import "github.com/jaxxstorm/jolokia_exporter/cmd"
 
 var version = "snapshot"
 
