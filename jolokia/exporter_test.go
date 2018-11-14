@@ -13,6 +13,8 @@ import (
 
 	"bytes"
 
+	"encoding/json"
+
 	"fmt"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -49,8 +51,13 @@ func checkRequestBody(t *testing.T, handlerFunc http.HandlerFunc) http.HandlerFu
 			t.Fatalf("error reading request body: %s", err)
 		}
 
-		if bytes.Compare(expectedBody, b) != 0 {
-			t.Fatalf("Requested body does not match. Expected to get %s, but got %s", expectedBody, b)
+		compactedBody := new(bytes.Buffer)
+		if err := json.Compact(compactedBody, expectedBody); err != nil {
+			t.Fatalf("error compacting JSON: %s", err)
+		}
+
+		if bytes.Compare(compactedBody.Bytes(), b) != 0 {
+			t.Fatalf("Requested body does not match. Expected to get %s, but got %s", compactedBody.Bytes(), b)
 		}
 
 		handlerFunc(rw, r)
@@ -159,7 +166,7 @@ func TestExporter_Collect_WithAuthButNoneGiven(t *testing.T) {
 	exp.Collect(c)
 
 	bufStr := buf.String()
-	if ! strings.Contains(bufStr, "Error scraping jolokia endpoint: there was an error, response code is 401, expected 200") {
+	if !strings.Contains(bufStr, "Error scraping jolokia endpoint: there was an error, response code is 401, expected 200") {
 		t.Fatalf("unexpect collect output: %v", bufStr)
 	}
 }
@@ -179,7 +186,7 @@ func TestExporter_Collect_WithAuthButWrongGiven(t *testing.T) {
 	exp.Collect(c)
 
 	bufStr := buf.String()
-	if ! strings.Contains(bufStr, "Error scraping jolokia endpoint: there was an error, response code is 401, expected 200") {
+	if !strings.Contains(bufStr, "Error scraping jolokia endpoint: there was an error, response code is 401, expected 200") {
 		t.Fatalf("unexpect collect output: %v", bufStr)
 	}
 }
