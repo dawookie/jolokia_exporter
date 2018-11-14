@@ -1,0 +1,42 @@
+project_name: jolokia_exporter
+before:
+   hooks:
+     # you may remove this if you don't use vgo
+     - glide i
+builds:
+  -
+    env:
+    - CGO_ENABLED=0
+    goos:
+    - linux
+    - darwin
+    goarch:
+    - amd64
+    main: .
+    ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+    binary: jolokia_exporter
+archive:
+  format: tar.gz
+  name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    amd64: x86_64
+snapshot:
+  name_template: SNAPSHOT-{{ .Commit }}
+nfpm:
+  vendor: Lee Briggs
+  homepage: "https://github.com/jaxxstorm/jolokia_exporter"
+  maintainer: Lee Briggs <lee@leebriggs.co.uk>
+  description: "Opinionated configuration management tool for Kubernetes Cluster"
+  license: MIT
+  formats:
+    - rpm
+    - deb
+  bindir: /usr/bin
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'

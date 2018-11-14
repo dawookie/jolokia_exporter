@@ -4,6 +4,8 @@ package main
 
 import "github.com/scalify/jolokia_exporter/cmd"
 
+var version = "snapshot"
+
 func main() {
-	cmd.Execute()
+	cmd.Execute(version)
 }

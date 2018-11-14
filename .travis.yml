@@ -1,0 +1,19 @@
+language: go
+addons:
+  apt:
+    packages:
+    - rpm
+before_install:
+- curl https://glide.sh/get | sh
+install:
+- glide i
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: curl -sL https://git.io/goreleaser | bash
+  on:
+    tags: true
+    condition: "$TRAVIS_OS_NAME = linux"
+env:
+  global:
+    secure: HQo1oXKQyLo+dg+WxonZpvw3Q1QfgQ3di4uzrA2erL+HnCqkhc4J2rccK3sCrfykNaNM4mWT8z1sqFnVYyDQy264LPi8lW21LpcsS/mYZ0K2FPPi09X6tWEoeOR4jwADdD2ZPwJKS237oh2shqCu0s40E1O0zvMPxa8+Whdq4Hw482ywBAmdRLSMm7PqIGzsxLqI+X2aFQCGyKNRHRuxN0oXO0xMIjkYGvmJlY7MBgCW4a1zYyVSCuRyQgV394ZsARpZKV9ABlJIN4uP1ZyZM+un9jfk/W2T178FKlkEfoc1qKg8qJnyBkkoA+1blWAcR8p+jr2RDFlUJX/hVwYM8KUgOnms6Iq3QV2iy28d0wESI464TeNiYWfqxOw1Oq5N3RrEQPO+TQYgMx1mIWKSZUczDm57S0BvwA9F5xJUVWjx+qTOUdL8d1+5KOnfQDgacF/BGVPj8f29CrAS8MGCyYLP467TVWxSLwVnAPCrlcWrdmgvnnnLOnsEPXeAYqmITt3VxdZoBPM3tvL7QAYHPV3idAiFIs6OoL+JL4LIASEnbzwoJfXd7HZrrSn2UKJGwmmmTq9fHGC+J1hLW28e/nJoET8bseX47KszqFMSGUuVEL2Y1zQ7bScHDraMDALSJ207SIYz6sYZpbWSklz55QJ9oZvLclGwf2LluOroJBo=
