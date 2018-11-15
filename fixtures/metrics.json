@@ -58,5 +58,31 @@
     },
     "timestamp": 1520095218,
     "status": 200
+  },
+  {
+    "value": 1645,
+    "request": {
+      "type": "read",
+      "attribute": "CollectionCount",
+      "target": {
+        "url": "service:jmx:rmi:///jndi/rmi://127.0.0.1:9119/jmxrmi"
+      },
+      "mbean": "java.lang:name=ParNew,type=GarbageCollector"
+     },
+    "status": 200,
+    "timestamp": 1542250628
+  },
+  {
+    "value": 3,
+    "request": {
+      "type": "read",
+      "attribute": "CollectionCount",
+      "target": {
+        "url": "service:jmx:rmi:///jndi/rmi://127.0.0.1:9119/jmxrmi"
+      },
+      "mbean": "java.lang:name=ConcurrentMarkSweep,type=GarbageCollector"
+     },
+    "status": 200,
+    "timestamp": 1542250628
   }
 ]

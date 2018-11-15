@@ -6,8 +6,8 @@ import (
 	"path"
 
 	"github.com/ghodss/yaml"
-	"strings"
 	"sort"
+	"strings"
 )
 
 // LoadConfig reads a file and returns the contained config
@@ -30,7 +30,6 @@ func LoadConfig(file string) (*Config, error) {
 	}
 
 	fixMbeanNames(config)
-
 	return config, nil
 }
 
