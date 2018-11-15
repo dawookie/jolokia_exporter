@@ -3,21 +3,41 @@
     "type": "read",
     "attribute": "HeapMemoryUsage",
     "mbean": "java.lang:type=Memory",
-    "path": "used"
+    "path": "used",
+    "target": null
   },
   {
     "type": "read",
     "attribute": "HeapMemoryUsage",
     "mbean": "java.lang:type=Memory",
-    "path": "max"
+    "path": "max",
+    "target": null
   },
   {
     "type": "read",
     "attribute": "ThreadCount",
-    "mbean": "java.lang:type=Threading"
+    "mbean": "java.lang:type=Threading",
+    "target": null
   },
   {
     "type": "read",
-    "mbean": "java.lang:type=OperatingSystem"
+    "mbean": "java.lang:type=OperatingSystem",
+    "target": null
+  },
+  {
+    "type": "read",
+    "attribute": "CollectionCount",
+    "mbean": "java.lang:name=ParNew,type=GarbageCollector",
+    "target": {
+      "url": "service:jmx:rmi:///jndi/rmi://127.0.0.1:9119/jmxrmi"
+    }
+  },
+  {
+    "type": "read",
+    "attribute": "CollectionCount",
+    "mbean": "java.lang:name=ConcurrentMarkSweep,type=GarbageCollector",
+    "target": {
+      "url": "service:jmx:rmi:///jndi/rmi://127.0.0.1:9119/jmxrmi"
+    }
   }
 ]

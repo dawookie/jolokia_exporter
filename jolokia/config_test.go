@@ -33,6 +33,26 @@ var expectedConfig = &Config{
 			},
 			Target: "java_os",
 		},
+		{
+			Source: MetricSource{
+				Mbean:     "java.lang:name=ParNew,type=GarbageCollector",
+				Attribute: "CollectionCount",
+				MetricTarget: &MetricTarget{
+					Url: "service:jmx:rmi:///jndi/rmi://127.0.0.1:9119/jmxrmi",
+				},
+			},
+			Target: "java_gc_parnew_collectioncount",
+		},
+		{
+			Source: MetricSource{
+				Mbean:     "java.lang:name=ConcurrentMarkSweep,type=GarbageCollector",
+				Attribute: "CollectionCount",
+				MetricTarget: &MetricTarget{
+					Url: "service:jmx:rmi:///jndi/rmi://127.0.0.1:9119/jmxrmi",
+				},
+			},
+			Target: "java_gc_cms_collectioncount",
+		},
 	},
 }
 
@@ -52,8 +72,9 @@ func checkConfig(t *testing.T, config *Config) {
 		t.Fatal("Expected config to be returned, got nil")
 	}
 
-	if len(config.Metrics) != 4 {
-		t.Fatalf("Expected config to contain 4 metrics, but found %d", len(config.Metrics))
+	if len(config.Metrics) != 6 {
+		t.Errorf("Expected config to contain 5 metrics, but found %d", len(config.Metrics))
+		t.Fatalf("Output %s", config.Metrics)
 	}
 
 	for index, metric := range expectedConfig.Metrics {

@@ -8,11 +8,13 @@ import (
 
 	"crypto/tls"
 
+	"bytes"
+	"encoding/json"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
-	"encoding/json"
-	"bytes"
 	"io/ioutil"
+
+	"github.com/kr/pretty"
 )
 
 // Exporter exports jolokia metrics for prometheus.
@@ -64,6 +66,7 @@ func NewExporter(logger log.Logger, config *Config, namespace string, insecure b
 		return nil, err
 	}
 
+	logger.Debugf("Config Hash: %#v", pretty.Formatter(config))
 	logger.Debugf("Prepared jolokia request: %s", exporter.requestBody)
 
 	return exporter, nil
@@ -160,15 +163,16 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	return
 }
 
-func (e *Exporter) prepare(config *Config) (error) {
+func (e *Exporter) prepare(config *Config) error {
 	req := Request{}
 
 	for _, m := range config.Metrics {
 		reqMetric := RequestMetric{
-			Type:      requestTypeRead,
-			Mbean:     m.Source.Mbean,
-			Attribute: m.Source.Attribute,
-			Path:      m.Source.Path,
+			Type:         requestTypeRead,
+			Mbean:        m.Source.Mbean,
+			Attribute:    m.Source.Attribute,
+			Path:         m.Source.Path,
+			MetricTarget: m.Source.MetricTarget,
 		}
 
 		e.metricMapping[reqMetric.String()] = m.Target

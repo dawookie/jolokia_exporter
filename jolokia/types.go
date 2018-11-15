@@ -16,19 +16,25 @@ type MetricMapping struct {
 	Target string       `json:"target"`
 }
 
+type MetricTarget struct {
+	Url string `json:"url,omitempty"`
+}
+
 // MetricSource defines what path the metric should be load from
 type MetricSource struct {
-	Mbean     string `json:"mbean"`
-	Attribute string `json:"attribute"`
-	Path      string `json:"path"`
+	Mbean        string        `json:"mbean"`
+	Attribute    string        `json:"attribute"`
+	Path         string        `json:"path"`
+	MetricTarget *MetricTarget `json:"target",omitempty`
 }
 
 // RequestMetric holds the info for jolokia what to export
 type RequestMetric struct {
-	Type      string `json:"type"`
-	Attribute string `json:"attribute,omitempty"`
-	Mbean     string `json:"mbean"`
-	Path      string `json:"path,omitempty"`
+	Type         string        `json:"type"`
+	Attribute    string        `json:"attribute,omitempty"`
+	Mbean        string        `json:"mbean"`
+	Path         string        `json:"path,omitempty"`
+	MetricTarget *MetricTarget `json:"target",omitempty`
 }
 
 func (m RequestMetric) String() string {

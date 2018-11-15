@@ -16,3 +16,15 @@ metrics:
 - source:
     mbean: java.lang:type=OperatingSystem
   target: java_os
+- source:
+    mbean: java.lang:name=ParNew,type=GarbageCollector
+    attribute: CollectionCount
+    target:
+      url: service:jmx:rmi:///jndi/rmi://127.0.0.1:9119/jmxrmi
+  target: java_gc_parnew_collectioncount
+- source:
+    mbean: java.lang:name=ConcurrentMarkSweep,type=GarbageCollector
+    attribute: CollectionCount
+    target:
+      url: service:jmx:rmi:///jndi/rmi://127.0.0.1:9119/jmxrmi
+  target: java_gc_cms_collectioncount
