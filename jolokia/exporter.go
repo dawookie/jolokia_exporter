@@ -92,6 +92,9 @@ func (e *Exporter) collect(ch chan<- prometheus.Metric) error {
 	startTime := time.Now()
 
 	resp, err := e.client.Do(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
 	ch <- prometheus.MustNewConstMetric(e.duration, prometheus.GaugeValue, time.Since(startTime).Seconds())
 
 	if err != nil {
@@ -100,7 +103,6 @@ func (e *Exporter) collect(ch chan<- prometheus.Metric) error {
 	}
 	ch <- prometheus.MustNewConstMetric(e.up, prometheus.GaugeValue, 1)
 
-	defer resp.Body.Close()
 	body, readErr := ioutil.ReadAll(resp.Body)
 	if readErr != nil {
 		return readErr
