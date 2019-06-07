@@ -56,15 +56,16 @@ var exportCmd = &cobra.Command{
 			panic(err)
 		}
 
-		prometheus.MustRegister(exp)
-		prometheus.MustRegister(version.NewCollector("jolokia_exporter"))
+		r := prometheus.NewRegistry()
+		r.MustRegister(exp)
+		r.MustRegister(version.NewCollector("jolokia_exporter"))
 
 		log.Infof("Exporting jolokia endpoint: %v", endpoint)
 		log.Info("Starting jolokia_exporter", version.Info())
 		log.Info("Build context", version.BuildContext())
 		log.Infof("Starting Server: %s", scrapeListen)
 
-		http.Handle(scrapeEndpoint, promhttp.Handler())
+		http.Handle(scrapeEndpoint, promhttp.HandlerFor(r, promhttp.HandlerOpts{}))
 		log.Fatal(http.ListenAndServe(scrapeListen, nil))
 	},
 }
