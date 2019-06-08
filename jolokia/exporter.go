@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"sync"
 	"time"
+	"net"
 
 	"crypto/tls"
 
@@ -55,7 +56,12 @@ func NewExporter(logger log.Logger, config *Config, namespace string, insecure b
 			nil,
 			nil),
 		client: &http.Client{
+			Timeout: 30 * time.Second,
 			Transport: &http.Transport{
+				Dial: (&net.Dialer{
+					Timeout:   10 * time.Second,
+				}).Dial,
+				TLSHandshakeTimeout: 10 * time.Second,
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: insecure},
 			},
 		},
